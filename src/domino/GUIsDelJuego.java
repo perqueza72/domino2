@@ -21,7 +21,6 @@ public class GUIsDelJuego extends JFrame {
 	private ImageIcon imagen;
 	private Icon imgFicha;
 	private MouseJuegoMedio mouseJuegoMedio;
-	private boolean cambiar;
 	private int nFichasJugador=4, nFichasMaquina, nFichasVAR;
 
 
@@ -100,7 +99,6 @@ public class GUIsDelJuego extends JFrame {
 
 
 	private void juegoMedio() {
-		cambiar=false;
 		this.getContentPane().setLayout(new BorderLayout());
 		fichasUsuario = new JPanel();
 		fichasMaquina = new JPanel();
@@ -168,7 +166,7 @@ public class GUIsDelJuego extends JFrame {
 		//VAR.
 
 		var = new JPanel();
-		var.setPreferredSize(new Dimension(50, 400));
+		var.setPreferredSize(new Dimension(200, 400));
 		var.setBackground(Color.ORANGE);
 		var.setAlignmentX(JPanel.RIGHT_ALIGNMENT);
 
@@ -214,35 +212,20 @@ public class GUIsDelJuego extends JFrame {
 		@Override
 		public void mouseEntered(MouseEvent e) {
 			// TODO Auto-generated method stub
-			if(cambiar && (JLabel)e.getSource() != origen)
-			{
-				((JLabel) e.getSource()).setBorder(overObject);
-			}
 			destino = (JLabel)e.getSource();
 			imgFicha = destino.getIcon();
 		}
-		//@Override
-		//public void mouseDoubleClicked(MouseEvent e)
-		//{
-
-		//}
 
 		@Override
 		public void mouseExited(MouseEvent e) {
 			// TODO Auto-generated method stub
-			if(cambiar && (JLabel)e.getSource() != origen)
-			{
-				((JComponent) e.getSource()).setBorder(nonBorder);
-			}
 		}
 
 		@Override
 		public void mousePressed(MouseEvent e) {
 			// TODO Auto-generated method stub
-			cambiar = true;
 			origen = (JLabel)e.getSource();
 			auxOrigen.setIcon(origen.getIcon());
-			((JLabel) e.getSource()).setBorder(border);
 		}
 
 		@Override
@@ -251,8 +234,6 @@ public class GUIsDelJuego extends JFrame {
 			origen.setIcon(imgFicha);
 			destino.setIcon(auxOrigen.getIcon());
 			auxOrigen.setIcon(destino.getIcon());
-			cambiar = false;
-			((JLabel) e.getSource()).setBorder(nonBorder);
 		}
 	}
 
