@@ -18,7 +18,7 @@ public class CampoDeJuego extends JPanel {
     public void dibujar()
     {
         this.setLayout(new FlowLayout());
-        imagen = new ImageIcon("src/Fichas/10.png");
+        imagen = new ImageIcon("src/Fichas/00.png");
         iconoRotado = new RotatedIcon(imagen, RotatedIcon.Rotate.UP);
         mouseRotar = new MouseRotar();
         fichasInvisibles = new ArrayList<>();
@@ -28,17 +28,12 @@ public class CampoDeJuego extends JPanel {
             fichasInvisibles.add(new JLabel(imagen));
             fichasInvisibles.get(i).addMouseListener(mouseRotar);
         }
-        JPanel espacio = new JPanel();
 		fichasInvisibles.get(0).setFocusable(false);
 
-		espacio.setSize(110, 110);
-		espacio.setBackground(Color.red);
 		cosa = new JLabel();
-		cosa.setIcon(imagen);
+		cosa.setIcon(new ImageIcon("src/Fichas/10.png"));
 		cosa.addMouseListener(mouseRotar);
-		espacio.add(cosa);
 
-		this.add(espacio);
 		this.add(Box.createHorizontalStrut(-10));
 		this.add(cosa);
 		this.add(Box.createHorizontalStrut(-10));
@@ -52,7 +47,16 @@ public class CampoDeJuego extends JPanel {
         @Override
         public void mouseClicked(MouseEvent e)
         {
-            ((JLabel)e.getSource()).setIcon(iconoRotado);
+            for(int i=0; i<7; i++) {
+                if (((JLabel) e.getSource()).getIcon().toString() == "src/Fichas/"+i+i+".png") {
+                    ImageIcon fichaARotar = (ImageIcon) ((JLabel) e.getSource()).getIcon();
+                    RotatedIcon rotar = new RotatedIcon(fichaARotar, RotatedIcon.Rotate.UP);
+                    ((JLabel) e.getSource()).setIcon(rotar);
+                    break;
+                }
+            }
+
+
         }
         @Override
         public void mouseEntered(MouseEvent e) {
