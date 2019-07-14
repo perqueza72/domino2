@@ -146,6 +146,10 @@ public class GUIsDelJuego extends JFrame {
 
 		campito = new CampoDeJuego();
 		campito.dibujar();
+		int nObjetos =campito.getComponentCount();
+		for(int i=0; i<nObjetos; i++) {
+			campito.getComponent(i).addMouseListener(mouseJuegoMedio);
+		}
 		add(campito);
 
 

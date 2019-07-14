@@ -15,7 +15,7 @@ public class CampoDeJuego extends JPanel {
     private Icon imgFicha;
     private ArrayList<JLabel> fichasInvisibles;
     private RotatedIcon iconoRotado;
-    private JLabel cosa, origen, destino, auxOrigen;
+    private JLabel cosa, origen, destino, auxOrigen = new JLabel();
     private String par0 = "src/Fichas/00.png",par1 = "src/Fichas/11.png",par2 = "src/Fichas/22.png",par3 = "src/Fichas/33.png";
     private String par4 = "src/Fichas/44.png",par5 = "src/Fichas/55.png",par6 = "src/Fichas/66.png";
     public void dibujar()
@@ -61,8 +61,6 @@ public class CampoDeJuego extends JPanel {
         @Override
         public void mouseEntered(MouseEvent e) {
             // TODO Auto-generated method stub
-            destino = (JLabel)e.getSource();
-            imgFicha = destino.getIcon();
         }
 
         @Override
@@ -72,16 +70,11 @@ public class CampoDeJuego extends JPanel {
         @Override
         public void mouseReleased(MouseEvent e) {
             // TODO Auto-generated method stub
-            origen.setIcon(imgFicha);
-            destino.setIcon(auxOrigen.getIcon());
-            auxOrigen.setIcon(destino.getIcon());
         }
 
         @Override
         public void mousePressed(MouseEvent e)
         {
-            origen = (JLabel)e.getSource();
-            auxOrigen.setIcon(origen.getIcon());
         }
     }
 }
