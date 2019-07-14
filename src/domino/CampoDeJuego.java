@@ -14,7 +14,7 @@ public class CampoDeJuego extends JPanel {
     private ImageIcon imagen;
     private ArrayList<JLabel> fichasInvisibles;
 
-    public void campoDeJuego()
+    public void dibujar()
     {
         this.setLayout(new FlowLayout());
         imagen = new ImageIcon("src/Fichas/Ficha_En_Blanco.png");
@@ -46,7 +46,7 @@ public class CampoDeJuego extends JPanel {
         @Override
         public void mouseClicked(MouseEvent e)
         {
-            
+
         }
         @Override
         public void mouseEntered(MouseEvent e) {

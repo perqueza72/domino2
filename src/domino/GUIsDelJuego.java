@@ -67,7 +67,7 @@ public class GUIsDelJuego extends JFrame {
 			// TODO Auto-generated method stub
 			((JComponent) e.getSource()).setVisible(false);;
 			repaint();
-			JuegoMedio();
+			juegoMedio();
 
 		}
 
@@ -98,7 +98,8 @@ public class GUIsDelJuego extends JFrame {
 	}
 
 
-	private void JuegoMedio() {
+
+	private void juegoMedio() {
 		cambiar=false;
 		this.getContentPane().setLayout(new BorderLayout());
 		fichasUsuario = new JPanel();
@@ -144,7 +145,7 @@ public class GUIsDelJuego extends JFrame {
 
 
 		campito = new CampoDeJuego();
-		campito.campoDeJuego();
+		campito.dibujar();
 		add(campito);
 
 
