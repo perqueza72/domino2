@@ -12,11 +12,15 @@ public class CampoDeJuego extends JPanel {
     private MouseRotar mouseRotar;
     private JPanel campoDeJuego;
     private ImageIcon imagen;
+    private Icon imgFicha;
     private ArrayList<JLabel> fichasInvisibles;
     private RotatedIcon iconoRotado;
-    private JLabel cosa;
+    private JLabel cosa, origen, destino, auxOrigen;
+    private String par0 = "src/Fichas/00.png",par1 = "src/Fichas/11.png",par2 = "src/Fichas/22.png",par3 = "src/Fichas/33.png";
+    private String par4 = "src/Fichas/44.png",par5 = "src/Fichas/55.png",par6 = "src/Fichas/66.png";
     public void dibujar()
     {
+
         this.setLayout(new FlowLayout());
         imagen = new ImageIcon("src/Fichas/00.png");
         iconoRotado = new RotatedIcon(imagen, RotatedIcon.Rotate.UP);
@@ -47,20 +51,18 @@ public class CampoDeJuego extends JPanel {
         @Override
         public void mouseClicked(MouseEvent e)
         {
-            for(int i=0; i<7; i++) {
-                if (((JLabel) e.getSource()).getIcon().toString() == "src/Fichas/"+i+i+".png") {
+            String direccion = ((JLabel) e.getSource()).getIcon().toString();
+                if (direccion == par0 || direccion == par1 || direccion == par2 || direccion == par3 || direccion == par4 || direccion == par5 || direccion == par6) {
                     ImageIcon fichaARotar = (ImageIcon) ((JLabel) e.getSource()).getIcon();
                     RotatedIcon rotar = new RotatedIcon(fichaARotar, RotatedIcon.Rotate.UP);
                     ((JLabel) e.getSource()).setIcon(rotar);
-                    break;
                 }
-            }
-
-
         }
         @Override
         public void mouseEntered(MouseEvent e) {
             // TODO Auto-generated method stub
+            destino = (JLabel)e.getSource();
+            imgFicha = destino.getIcon();
         }
 
         @Override
@@ -68,13 +70,18 @@ public class CampoDeJuego extends JPanel {
         }
 
         @Override
-        public void mousePressed(MouseEvent e) {
+        public void mouseReleased(MouseEvent e) {
             // TODO Auto-generated method stub
+            origen.setIcon(imgFicha);
+            destino.setIcon(auxOrigen.getIcon());
+            auxOrigen.setIcon(destino.getIcon());
         }
 
         @Override
-        public void mouseReleased(MouseEvent e) {
-            // TODO Auto-generated method stub
+        public void mousePressed(MouseEvent e)
+        {
+            origen = (JLabel)e.getSource();
+            auxOrigen.setIcon(origen.getIcon());
         }
     }
 }
