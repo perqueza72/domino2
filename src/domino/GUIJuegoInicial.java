@@ -37,7 +37,7 @@ public class GUIJuegoInicial extends JFrame{
 		
 		setTitle("Domino");
 		this.setResizable(false);
-		setSize(800,800);
+		setSize(1800,1024);
 		this.setLocationRelativeTo(null);
 		setVisible(true);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

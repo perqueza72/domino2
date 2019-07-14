@@ -37,7 +37,7 @@ public class GUIsDelJuego extends JFrame {
 
 		setTitle("Domino");
 		this.setResizable(false);
-		setSize(1000, 600);
+		setSize(1800, 1024);
 		this.setLocationRelativeTo(null);
 		setVisible(true);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

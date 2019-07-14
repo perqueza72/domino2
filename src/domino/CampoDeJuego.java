@@ -11,7 +11,7 @@ public class CampoDeJuego extends JPanel {
 
     private MouseRotar mouseRotar;
     private JPanel campoDeJuego;
-    private ImageIcon imagen;
+    private ImageIcon camino;
     private Icon imgFicha;
     private ArrayList<JLabel> fichasInvisibles;
     private RotatedIcon iconoRotado;
@@ -22,28 +22,24 @@ public class CampoDeJuego extends JPanel {
     {
 
         this.setLayout(new FlowLayout());
-        imagen = new ImageIcon("src/Fichas/00.png");
-        iconoRotado = new RotatedIcon(imagen, RotatedIcon.Rotate.UP);
+        camino = new ImageIcon("src/Fichas/camino.png");
         mouseRotar = new MouseRotar();
         fichasInvisibles = new ArrayList<>();
-        int nFichasJugador = 28;
-        for(int i = 0; i < nFichasJugador; i++)
+        int nFichasCamino = 54;
+        for(int i = 0; i < nFichasCamino; i++)
         {
-            fichasInvisibles.add(new JLabel(imagen));
+            fichasInvisibles.add(new JLabel(camino));
             fichasInvisibles.get(i).addMouseListener(mouseRotar);
         }
-		fichasInvisibles.get(0).setFocusable(false);
 
-		cosa = new JLabel();
-		cosa.setIcon(new ImageIcon("src/Fichas/10.png"));
-		cosa.addMouseListener(mouseRotar);
 
 		this.add(Box.createHorizontalStrut(-10));
-		this.add(cosa);
+
 		this.add(Box.createHorizontalStrut(-10));
 		this.add(fichasInvisibles.get(0));
 		this.add(Box.createHorizontalStrut(-10));
 		this.add(fichasInvisibles.get(1));
+		this.setBackground(Color.red);
     }
 
     private class MouseRotar implements MouseListener{
