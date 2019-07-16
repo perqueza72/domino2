@@ -15,16 +15,18 @@ public class GUIsDelJuego extends JFrame {
 	 * 
 	 */
 	private static final long serialVersionUID = 5709401444963150583L;
-	private JLabel origen, destino, auxOrigen = new JLabel(), imgSocket, imgSocketRotated, monto, sacarFicha;
+	private JLabel origen, destino, auxOrigen, imgSocket, imgSocketRotated, monto, sacarFicha, posAnterior, posPosterior;
 	private JPanel fichasUsuario, campoDeJuego, fichasMaquina, var;
-	private ArrayList<JLabel> fichaDelJugador, fichaDeMaquina, fichaEnColeccion, fichaEnBlanco;
+	private ArrayList<JLabel> fichaDelJugador, fichaDeMaquina;
 	private ImageIcon imagen;
 	private Icon imgFicha;
 	private MouseSacarFicha mouseSacarFicha;
-	private int nFichasJugador=4, nFichasMaquina, nFichasVAR;
-	private boolean bloquear, socketRotated, cambiar;
+	private boolean bloquear, socketRotated, cambiar, error, primeraFicha;
+	private boolean maquinaGana, jugadorGana;
+	private String izq, der, nombre;
 
 	private CampoDeJuego campito;
+	private Var repartidor;
 
 	private Border margin = BorderFactory.createEmptyBorder(0,0,0,0);
 	private Border border = BorderFactory.createLineBorder(Color.BLUE, 2);
@@ -39,13 +41,10 @@ public class GUIsDelJuego extends JFrame {
 
 		setTitle("Domino");
 		this.setResizable(false);
-		setSize(1800, 1024);
+		setSize(1800, 400);
 		this.setLocationRelativeTo(null);
 		setVisible(true);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		nFichasJugador = 4;
-		nFichasMaquina = 4;
-		nFichasVAR = 10;
 		campito = new CampoDeJuego();
 	}
 
@@ -116,8 +115,11 @@ public class GUIsDelJuego extends JFrame {
 		imgSocket.setIcon(new ImageIcon("src/Fichas/camino.png"));
 		imgSocketRotated = new JLabel();
 		imgSocketRotated.setIcon(new ImageIcon("src/Fichas/space.png"));
-
-
+		auxOrigen = new JLabel();
+		posAnterior = new JLabel();
+		posPosterior = new JLabel();
+		
+		primeraFicha = true;
 
 
 		//BARAJA DE LA MAQUINA.
@@ -134,6 +136,7 @@ public class GUIsDelJuego extends JFrame {
 			fichasMaquina.add(fichaDeMaquina.get(i));
 		}
 		//TERMINADO MAQUINA
+		
 		//BARAJA DEL JUGADOR.
 		for(int i = 0; i < fichaDelJugador.size(); i++) {
 			fichaDelJugador.get(i).addMouseListener(mouseJuegoMedio);
@@ -151,11 +154,7 @@ public class GUIsDelJuego extends JFrame {
 		fichasMaquina.setAlignmentX(JPanel.LEFT_ALIGNMENT);
 
 
-
-
-
 		//CAMPO DE JUEGO
-
 
 		campito.dibujar();
 		campito.add(monto);
@@ -202,13 +201,14 @@ public class GUIsDelJuego extends JFrame {
 		@Override
 		public void mouseClicked(MouseEvent e)
 		{
-
+			
 		}
 		@Override
 		public void mouseEntered(MouseEvent e) {
 			// TODO Auto-generated method stub
 			destino = (JLabel)e.getSource();
 			imgFicha = destino.getIcon();
+			//agregarComp();
 		}
 
 		@Override
@@ -220,6 +220,7 @@ public class GUIsDelJuego extends JFrame {
 		public void mousePressed(MouseEvent e) {
 			// TODO Auto-generated method stub
 			String nulo = null;
+			
 			if((destino.getIcon().toString()).equals(imgSocket.getIcon().toString()))
 			{
 				origen = destino;
@@ -241,41 +242,47 @@ public class GUIsDelJuego extends JFrame {
 				bloquear = true;
 				cambiar = true;
 			}
+			else
+				cambiar = false;
 		}
 
 		@Override
 		public void mouseReleased(MouseEvent e) {
 			// TODO Auto-generated method stub
-			String nulo = null;
-			String quePasa = destino.getIcon().toString();
+			acomodarFicha();
 			
+			trasladarFicha(nombre);
 			
-			for(int i = 0; i < 1; i++) {
-				if((quePasa.substring(i, 1)).equals("d")) {
-					socketRotated = true;
-					imgSocketRotated.setIcon(destino.getIcon());
-				}
-				else
-					socketRotated = false;
-			}
+			ganador();
 			
-			if((((destino.getIcon().toString()).equals(imgSocket.getIcon().toString())) || socketRotated) &&
-				(nulo == destino.getName()) && cambiar)
+			if(jugadorGana || maquinaGana)
 			{
-				for(int i = 0; i < nFichasJugador; i++)
+				///Imprime el JPanel con el mensaje de victoria o derrota.
+			}
+		}
+	}
+	
+	private void trasladarFicha(String nombre) {
+		String nulo = null;
+		
+		if((((destino.getIcon().toString()).equals(imgSocket.getIcon().toString()))) &&
+			((nulo == destino.getName()) || destino.getName().equals("camino")) && cambiar && !error)
+		{
+			if(destino.equals(origen)) {}
+			else {
+				for(int i = 0; i < fichaDelJugador.size(); i++)
 				{
 					if((fichasUsuario.getComponent(i)).equals(origen))
 					{
 						fichasUsuario.getComponent(i).setVisible(false);
 						fichasUsuario.remove(i);
 						fichaDelJugador.remove(origen);
-						nFichasJugador--;
 					}
 				}
 				
 				destino.setIcon(auxOrigen.getIcon());
 				if(bloquear)
-					destino.setName("DontMove");
+					destino.setName(nombre);
 				
 				if(origen.getIcon().toString().equals(imgSocketRotated.getIcon().toString())) {
 					origen = imgSocketRotated;
@@ -285,12 +292,135 @@ public class GUIsDelJuego extends JFrame {
 					origen = imgSocket;
 					auxOrigen.setIcon(imgSocket.getIcon());
 				}
-				
-				bloquear = false;
 			}
+			
+			bloquear = false;
 		}
 	}
-
+	
+	private void acomodarFicha() {
+		String aux = "";
+		
+		for(int i = 0; i < campito.getComponentCount(); i++)
+		{	
+			if((campito.getComponent(i).equals(destino)) && (i != 0) && (i != campito.getComponentCount()-1)){
+				
+				posAnterior = (JLabel)campito.getComponent(i-1); // posicion anterior.
+				posPosterior = (JLabel)campito.getComponent(i+1); // posicion siguiente.
+				
+				izq = posAnterior.getName();
+				der = posPosterior.getName();
+				break;
+			}
+			else if(!(i != 0))
+				izq = "kjabskjkgashgasdhgasdhsdjhasdjhgasdjhadjhgasdjhsdjhsdjhgd";
+			else
+				der = "kjbadkjbajasdkjasdjhgasdjhgasdjhgasdjhgasdjhgad";
+		}
+		
+		if((izq.substring(0, 1).equals("c")) && !(der.substring(0, 1).equals("c"))) {
+			int igualarA = Integer.parseInt(der.substring(0, 1));
+			int points = Integer.parseInt((origen.getIcon().toString()).substring(12,13));
+			if(igualarA == points) {
+				aux = origen.getIcon().toString();
+				nombre = aux.substring(11, 13);
+				
+				if(aux.substring(11, 12).equals(aux.substring(12, 13))) {
+					ImageIcon fichaARotar = (ImageIcon) auxOrigen.getIcon();
+                    RotatedIcon rotar = new RotatedIcon(fichaARotar, RotatedIcon.Rotate.UP);
+                    auxOrigen.setIcon(rotar);
+				}
+				error = false;
+			}
+			else {
+				points = Integer.parseInt((origen.getIcon().toString()).substring(11,12));
+				if(igualarA == points) {
+					aux = origen.getIcon().toString();
+					nombre = aux.substring(12,13) + Integer.toString(points);
+					
+					if(aux.substring(11, 12).equals(aux.substring(12, 13))) {
+						ImageIcon fichaARotar = (ImageIcon) auxOrigen.getIcon();
+	                    RotatedIcon rotar = new RotatedIcon(fichaARotar, RotatedIcon.Rotate.UP);
+	                    auxOrigen.setIcon(rotar);
+					}
+					else {
+						ImageIcon fichaARotar = (ImageIcon) auxOrigen.getIcon();
+	                    RotatedIcon rotar = new RotatedIcon(fichaARotar, RotatedIcon.Rotate.UPSIDE_DOWN);
+	                    auxOrigen.setIcon(rotar);
+						error = false;
+					}
+				}
+				else
+					error = true;
+			}
+		}
+		else if((der.substring(0, 1).equals("c")) && !(izq.substring(0, 1).equals("c"))) {
+			int igualarA = Integer.parseInt(izq.substring(1, 2));
+			int points = Integer.parseInt((origen.getIcon().toString()).substring(11,12));
+			if(igualarA == points) {
+				aux = origen.getIcon().toString();
+				nombre = aux.substring(11, 13);
+				
+				if(aux.substring(11, 12).equals(aux.substring(12, 13))) {
+					ImageIcon fichaARotar = (ImageIcon) auxOrigen.getIcon();
+                    RotatedIcon rotar = new RotatedIcon(fichaARotar, RotatedIcon.Rotate.UP);
+                    auxOrigen.setIcon(rotar);
+				}
+				
+				error = false;
+			}
+			else {
+				points = Integer.parseInt((origen.getIcon().toString()).substring(12,13));
+				if(igualarA == points) {
+					//GuardarNombre
+					aux = origen.getIcon().toString();
+					nombre = Integer.toString(points) + aux.substring(11,12);
+					
+					if(aux.substring(11, 12).equals(aux.substring(12, 13))) {
+						ImageIcon fichaARotar = (ImageIcon) auxOrigen.getIcon();
+	                    RotatedIcon rotar = new RotatedIcon(fichaARotar, RotatedIcon.Rotate.UP);
+	                    auxOrigen.setIcon(rotar);
+					}
+					else {
+						ImageIcon fichaARotar = (ImageIcon) auxOrigen.getIcon();
+	                    RotatedIcon rotar = new RotatedIcon(fichaARotar, RotatedIcon.Rotate.UPSIDE_DOWN);
+	                    auxOrigen.setIcon(rotar);
+						error = false;
+					}
+				}
+				else
+					error = true;
+			}
+		}
+		else if(primeraFicha){
+			//Solo aplica para cuando es primera vez colocando ficha.
+			aux = origen.getIcon().toString();
+			nombre = aux.substring(11, 13);
+			
+			if(aux.substring(11, 12).equals(aux.substring(12, 13))) {
+				ImageIcon fichaARotar = (ImageIcon) auxOrigen.getIcon();
+                RotatedIcon rotar = new RotatedIcon(fichaARotar, RotatedIcon.Rotate.UP);
+                auxOrigen.setIcon(rotar);
+			}
+			
+			error = false;
+			primeraFicha = false;
+		}
+		else
+			error = true;
+	}
+	
+	private void ganador() {
+		if(fichaDelJugador.isEmpty())
+			jugadorGana = true;
+		else if(fichaDeMaquina.isEmpty())
+			maquinaGana = true;
+		else {
+			maquinaGana = false;
+			jugadorGana = false;
+		}
+	}
+	
 	private class MouseSacarFicha implements MouseListener
 	{
 		@Override
