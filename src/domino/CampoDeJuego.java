@@ -11,7 +11,7 @@ import java.util.Observer;
 public class CampoDeJuego extends JPanel {
 
     private MouseRotar mouseRotar;
-    private JPanel campoDeJuego;
+    private JPanel campoDeJuego, centro, izquierdo, derecha;
     private ImageIcon camino;
     private Icon imgFicha;
     private ArrayList<JLabel> fichasInvisibles;
@@ -21,47 +21,16 @@ public class CampoDeJuego extends JPanel {
     private String par4 = "src/Fichas/44.png",par5 = "src/Fichas/55.png",par6 = "src/Fichas/66.png";
     public void dibujar() {
 
-        this.setLayout(new FlowLayout(0, 0,0));
-
+        this.setLayout(new FlowLayout(0,0,0));
 
         camino = new ImageIcon("src/Fichas/camino.png");
         RotatedIcon rotado = new RotatedIcon(camino, RotatedIcon.Rotate.UP);
         mouseRotar = new MouseRotar();
         fichasInvisibles = new ArrayList<>();
         int nFichasCamino = 54;
-        for (int i = 0; i < nFichasCamino; i++) {
-            if (i % 10 == 0) {
-                fichasInvisibles.add(new JLabel(rotado));
-            } else {
-                fichasInvisibles.add(new JLabel(camino));
-            }
-            fichasInvisibles.get(i).addMouseListener(mouseRotar);
-        }
-        ImageIcon imagen = new ImageIcon("src/Fichas/space.png");
-        RotatedIcon imgAux = new RotatedIcon(imagen, 90);
-        int tamano = 50;
-        for (int i = 0; i < nFichasCamino; i++) {
-            if(i%10 == 0) {
-                if(i%20 == 0) {
-                    this.add(fichasInvisibles.get(i));
-                }
-                else {
-                    for(int j=0; j<15; j++)
-                    {
-                        JLabel labelAux = new JLabel(imagen);
-                        labelAux.setVisible(true);
-                        labelAux.setVerticalAlignment(SwingConstants.TOP);
-                        this.add(labelAux);
-                    }
-                    this.add(fichasInvisibles.get(i));
+        this.add(new JLabel(rotado));
 
-                }
-            }
-            else
-                {
-                    this.add(fichasInvisibles.get(i));
-                }
-        }
+
     }
 
     private class MouseRotar implements MouseListener{
@@ -69,6 +38,7 @@ public class CampoDeJuego extends JPanel {
         @Override
         public void mouseClicked(MouseEvent e)
         {
+            ((JPanel)e.getSource()).add(new JLabel(iconoRotado));
             String direccion = ((JLabel) e.getSource()).getIcon().toString();
                 if (direccion == par0 || direccion == par1 || direccion == par2 || direccion == par3 || direccion == par4 || direccion == par5 || direccion == par6) {
                     ImageIcon fichaARotar = (ImageIcon) ((JLabel) e.getSource()).getIcon();
@@ -93,6 +63,7 @@ public class CampoDeJuego extends JPanel {
         @Override
         public void mousePressed(MouseEvent e)
         {
+
         }
     }
 }

@@ -13,7 +13,6 @@ public class PrincipalMoverFicha {
 			  UIManager.setLookAndFeel(className); 
 			  } 
 		catch (Exception e) {}
-		  
 		  EventQueue.invokeLater(new Runnable() {public void run() { GUIsDelJuego myWindow =
 		  new GUIsDelJuego(); }});
 	}

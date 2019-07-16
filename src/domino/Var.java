@@ -13,33 +13,57 @@ import javax.swing.border.Border;
 
 public class Var {
 	private int fichas = 28;
-	private ArrayList<JLabel> fichaEnColeccion;
+	private ArrayList<JLabel> fichasRobar;
 	private ImageIcon imagen;
 	private MouseEnInicio mouseEnInicio;
 	private Border nonBorder = BorderFactory.createLineBorder(Color.white, 2);
-	public void generarFichas() 
+
+	
+	public void generarFichas(ArrayList<JLabel> arrayUsuario, ArrayList<JLabel> arrayMaquina)
 	{
-		imagen = new ImageIcon("src/imagenes/ficha2.png");;
-		for(int i = 0; i < fichas; i++) {
-		    fichaEnColeccion.add(new JLabel());
+		fichasRobar = new ArrayList<>();
+		for(int i = 6; i >= 0; i--) {
+			for(int j = i; j >= 0; j--) {
+				fichasRobar.add(new JLabel(new ImageIcon("src/Fichas/" + i + j + ".png")));
+			}
 		}
 	}
-	public int darFicha(int fichasUsuario) 
+
+	public void darFicha(ArrayList<JLabel> darA)
+	{
+
+
+	}
+	public int fichasRestantes()
+	{
+		return fichasRobar.size();
+	}
+
+	public void otroDar(ArrayList<JLabel> darA)
 	{
 		Random rand = new Random();
-		int fichaDada = rand.nextInt(fichas);
-		fichas--;
-		fichaEnColeccion.remove(fichaDada);
-		return (fichasUsuario+1);
+		int fichaDada = rand.nextInt(fichasRobar.size());
+		darA.get(darA.indexOf(fichasRobar.get(fichaDada))).setVisible(true);
+		fichasRobar.remove(fichaDada);
 	}
-	public void MostrarFichas()
-	{
-		
-		for(int i = 0; i < 27; i++) {
-			fichaEnColeccion.get(i).addMouseListener(mouseEnInicio);
-			fichaEnColeccion.get(i).setBorder(nonBorder);
-			//add(fichaEnColeccion.get(i));
-		}
+		public void repartirFichasIniciales(ArrayList<JLabel> usuario, ArrayList<JLabel> maquina)
+		{
+			int fichaDada;
+			for(int i = 0; i < 7; i++)
+			{
+				Random rand = new Random();
+				fichaDada = rand.nextInt(fichasRobar.size());
+				usuario.add(fichasRobar.get(fichaDada));
+				fichasRobar.remove(fichaDada);
+				maquina.add(fichasRobar.get(fichaDada));
+				fichasRobar.remove(fichaDada);
+			}
+			for(int i =0; i<fichasRobar.size(); i++)
+			{
+				fichasRobar.get(i).setVisible(false);
+				maquina.add(fichasRobar.get(i));
+				usuario.add(fichasRobar.get(i));
+			}
 	}
 	
 	 private class MouseEnInicio implements MouseListener
