@@ -21,12 +21,8 @@ public class CampoDeJuego extends JPanel {
     private String par4 = "src/Fichas/44.png",par5 = "src/Fichas/55.png",par6 = "src/Fichas/66.png";
     public void dibujar() {
 
-        this.setLayout(new GridBagLayout());
-        GridBagConstraints c = new GridBagConstraints();
+        this.setLayout(new FlowLayout(0, 0,0));
 
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.gridx = 0;
-        c.gridy = 0;
 
         camino = new ImageIcon("src/Fichas/camino.png");
         RotatedIcon rotado = new RotatedIcon(camino, RotatedIcon.Rotate.UP);
@@ -41,24 +37,29 @@ public class CampoDeJuego extends JPanel {
             }
             fichasInvisibles.get(i).addMouseListener(mouseRotar);
         }
-
+        ImageIcon imagen = new ImageIcon("src/Fichas/space.png");
+        RotatedIcon imgAux = new RotatedIcon(imagen, 90);
         int tamano = 50;
         for (int i = 0; i < nFichasCamino; i++) {
-            this.add(Box.createHorizontalStrut(-10));
             if(i%10 == 0) {
-                if(i%20 == 0)
-                    c.gridx=8*60;
-                else
-                    c.gridx=0;
-                c.gridy+=60;
-                this.add(fichasInvisibles.get(i), c);
-                c.gridy+=60;
-                c.gridx=0;
+                if(i%20 == 0) {
+                    this.add(fichasInvisibles.get(i));
+                }
+                else {
+                    for(int j=0; j<15; j++)
+                    {
+                        JLabel labelAux = new JLabel(imagen);
+                        labelAux.setVisible(true);
+                        labelAux.setVerticalAlignment(SwingConstants.TOP);
+                        this.add(labelAux);
+                    }
+                    this.add(fichasInvisibles.get(i));
+
+                }
             }
             else
                 {
-                    this.add(fichasInvisibles.get(i), c);
-                    c.gridx+=60;
+                    this.add(fichasInvisibles.get(i));
                 }
         }
     }
