@@ -45,10 +45,7 @@ public class CampoDeJuego extends JPanel {
         cIzq.gridx+=1;
         add(espacio, cIzq);
         cIzq.gridx+=1;
-        if(contador%2!=0)
-            label.setIcon(icono);
-        else
-            label.setIcon(new RotatedIcon(icono, 90));
+        label.setIcon(icono);
 
         //puntas.get(0).setIcon(icono);
         repaint();

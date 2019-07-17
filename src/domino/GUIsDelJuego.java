@@ -17,8 +17,10 @@ public class GUIsDelJuego extends JFrame {
 	private static final long serialVersionUID = 5709401444963150583L;
 	private JLabel origen, destino, monto, sacarFicha;
 	private JPanel fichasUsuario, campoDeJuego, fichasMaquina, var;
+
 	private ArrayList<JLabel> fichaDelJugador, fichaDeMaquina, fichasExternas;
 	private ImageIcon imagen;
+
 	private MouseSacarFicha mouseSacarFicha;
 	private MouseJuegoMedio mouseJuegoMedio;
 	private PonerFichaEnTablero ponerFichaEnTablero;
@@ -42,7 +44,6 @@ public class GUIsDelJuego extends JFrame {
 		this.setLocationRelativeTo(null);
 		setVisible(true);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		campito = new CampoDeJuego();
 	}
 
 	private void MenuPrincipal()
@@ -105,67 +106,61 @@ public class GUIsDelJuego extends JFrame {
         this.getContentPane().removeAll();
         this.repaint();
 		this.getContentPane().setLayout(new BorderLayout());
+
 		fichasUsuario = new JPanel();
 		fichasMaquina = new JPanel();
 		campoDeJuego = new JPanel();
-		mouseJuegoMedio = new MouseJuegoMedio();
-		origen = new JLabel();
-		destino = new JLabel();
-		imagen = new ImageIcon("src/Fichas/55.png");
-		ponerFichaEnTablero = new PonerFichaEnTablero();
-		fichasExternas = new ArrayList<>();
 
+		origen = new JLabel("invalid");
+		destino = new JLabel();
+
+		imagen = new ImageIcon("src/Fichas/55.png");
+
+		ponerFichaEnTablero = new PonerFichaEnTablero();
+		mouseJuegoMedio = new MouseJuegoMedio();
+
+		fichasExternas = new ArrayList<>();
 		fichasExternas.add(new JLabel(imagen));
 		fichasExternas.add(new JLabel(imagen));
+
+		campito = new CampoDeJuego();
+
+
 
 
 		//BARAJA DE LA MAQUINA.
 
 		fichaDeMaquina = new ArrayList<JLabel>();
 		fichaDelJugador = new ArrayList<JLabel>();
+
 		robar.generarFichas(fichaDelJugador, fichaDeMaquina);
 		robar.repartirFichasIniciales(fichaDelJugador, fichaDeMaquina);
 
 		for(int i = 0; i < fichaDeMaquina.size(); i++)
 		{
-			fichaDeMaquina.get(i).addMouseListener(mouseJuegoMedio);
-			fichaDeMaquina.get(i).setBorder(nonBorder);
 			fichasMaquina.add(fichaDeMaquina.get(i));
 		}
-		//TERMINADO MAQUINA
-		//BARAJA DEL JUGADOR.
+
 		for(int i = 0; i < fichaDelJugador.size(); i++) {
 			fichaDelJugador.get(i).addMouseListener(mouseJuegoMedio);
-			fichaDelJugador.get(i).setBorder(nonBorder);
 			fichasUsuario.add(fichaDelJugador.get(i));
 		}
+
 		fichasUsuario.setPreferredSize(new Dimension(400, 120));
-		fichasUsuario.setAlignmentY(JPanel.BOTTOM_ALIGNMENT);
-		fichasMaquina.setAlignmentX(JPanel.LEFT_ALIGNMENT);
-
-		//TERMINADO BARAJA jUGADOR
-
 		fichasMaquina.setPreferredSize(new Dimension(400, 120));
-		fichasMaquina.setAlignmentY(JPanel.TOP_ALIGNMENT);
-		fichasMaquina.setAlignmentX(JPanel.LEFT_ALIGNMENT);
 
 
 
 
 		//CAMPO DE JUEGO
 		imagen = new ImageIcon("src/Fichas/22.png");
-		RotatedIcon imgRotada = new RotatedIcon(imagen);
-		campito.dibujar();
 
+		campito.dibujar();
 		int nObjetos =campito.getComponentCount();
 		for(int i=0; i<nObjetos; i++) {
 			campito.getComponent(i).addMouseListener(ponerFichaEnTablero);
 		}
 
-
-
-
-		//TERMINADO CAMPO DE JUEGO
 
 		//VAR.
 		mouseSacarFicha = new MouseSacarFicha();
@@ -205,9 +200,13 @@ public class GUIsDelJuego extends JFrame {
 		@Override
 		public void mouseReleased(MouseEvent e) {
 
-			campito.getComponent(campito.getComponentCount() - 1).addMouseListener(ponerFichaEnTablero);
-			campito.validad(destino, origen.getIcon(), fichasExternas);
-
+			if(!origen.getText().equals("invalid")) {
+				campito.getComponent(campito.getComponentCount() - 1).addMouseListener(ponerFichaEnTablero);
+				campito.validad(destino, origen.getIcon(), fichasExternas);
+					fichasUsuario.remove(origen);
+					fichasUsuario.repaint();
+					fichasUsuario.revalidate();
+			}
 		}
 
 		@Override
@@ -241,6 +240,7 @@ public class GUIsDelJuego extends JFrame {
 		public void mousePressed(MouseEvent e)
 		{
 			origen = ((JLabel)e.getSource());
+			origen.setText("");
 		}
 
 		@Override
