@@ -24,7 +24,8 @@ public class Var {
 		fichasRobar = new ArrayList<>();
 		for(int i = 6; i >= 0; i--) {
 			for(int j = i; j >= 0; j--) {
-				fichasRobar.add(new JLabel(new ImageIcon("src/Fichas/" + i + j + ".png")));
+				ImageIcon iconoFicha = new ImageIcon("src/Fichas/" + i + j + ".png");
+				fichasRobar.add(new JLabel(iconoFicha));
 			}
 		}
 	}
@@ -55,6 +56,7 @@ public class Var {
 				fichaDada = rand.nextInt(fichasRobar.size());
 				usuario.add(fichasRobar.get(fichaDada));
 				fichasRobar.remove(fichaDada);
+				fichaDada = rand.nextInt(fichasRobar.size());
 				maquina.add(fichasRobar.get(fichaDada));
 				fichasRobar.remove(fichaDada);
 			}
