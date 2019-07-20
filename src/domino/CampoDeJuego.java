@@ -18,39 +18,69 @@ public class CampoDeJuego extends JPanel {
     private String par0 = "src/Fichas/00.png",par1 = "src/Fichas/11.png",par2 = "src/Fichas/22.png",par3 = "src/Fichas/33.png";
     private String par4 = "src/Fichas/44.png",par5 = "src/Fichas/55.png",par6 = "src/Fichas/66.png";
     private GridBagConstraints cIzq, cDer;
-    final private int w = 98, h = 48;
+    private int w = 98, h = 48, fichasIzq=0, fichasDer=0, rIzq=-1, rDer=2;
 
     public void dibujar() {
         cIzq = new GridBagConstraints();
         cDer = new GridBagConstraints();
+        int cXInicial = 240, cYInicial=100;
         this.setLayout(new GridBagLayout());
         this.setBackground(Color.blue);
+
         int x = 800;
         int y = 600;
         this.setPreferredSize(new Dimension(x, y));
-        JLabel izq = new JLabel(new ImageIcon("src/Fichas/camino.png"));
         JLabel cen = new JLabel(new ImageIcon("src/Fichas/11.png"));
-        JLabel der = new JLabel(new ImageIcon("src/Fichas/camino.png"));
-        add(izq, cIzq);
-        cIzq.gridx+=240;
+        cIzq.gridx = cXInicial;
+        cIzq.gridy = cYInicial;
         add(cen, cIzq);
-        cDer.gridx=cIzq.gridx+60;
-        add(der, cDer);
-        cIzq.gridx=0;
+        cIzq.gridx = cXInicial-1;
+        cIzq.gridy = cYInicial;
+        cDer.gridx = cXInicial+1;
+        cDer.gridy = cYInicial;
     }
-    public void validad(JLabel label, Icon icono, ArrayList<JLabel> puntas)
+    public void ponerFichaEnCampo(JLabel label, int PonerFichaEn)
     {
-        JLabel espacio = new JLabel(new ImageIcon("src/Fichas/camino.png"));
-        contador++;
-        cIzq.gridx+=1;
-        add(espacio, cIzq);
-        cIzq.gridx+=1;
-        label.setIcon(icono);
+        //ToDo
+        if(PonerFichaEn == 1)
+        {
+            fichasIzq++;
+            if(fichasIzq%6==0 || fichasIzq%7==0) {
+                cIzq.gridy-=2;
+                if(fichasIzq%6==0)
+                {
+                    RotatedIcon rotada = new RotatedIcon(label.getIcon(), 90);
+                    label.setIcon(rotada);
+                    rIzq*=-1;
+                }
+            }
+            else {
+                cIzq.gridx+= rIzq;
+            }
+            add(label, cIzq);
+        }
+        if(PonerFichaEn == 2)
+        {
+            fichasDer++;
+            if(fichasDer%6==0 || fichasDer%7==0) {
+                cDer.gridy+=2;
+                if(fichasDer%6==0)
+                {
+                    RotatedIcon rotada = new RotatedIcon(label.getIcon(), 90);
+                    label.setIcon(rotada);
+                    rDer*=-1;
+                }
+            }
+            else {
+                cDer.gridx+= rDer;
+            }
+            add(label, cDer);
+        }
 
-        //puntas.get(0).setIcon(icono);
         repaint();
         revalidate();
     }
+
     private class MouseRotar implements MouseListener{
 
         @Override
@@ -70,7 +100,6 @@ public class CampoDeJuego extends JPanel {
         }
         @Override
         public void mouseEntered(MouseEvent e) {
-            // TODO Auto-generated method stub
         }
 
         @Override
@@ -79,7 +108,6 @@ public class CampoDeJuego extends JPanel {
 
         @Override
         public void mouseReleased(MouseEvent e) {
-            // TODO Auto-generated method stub
         }
 
         @Override

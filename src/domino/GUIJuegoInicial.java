@@ -1,7 +1,6 @@
 package domino;
 
-import java.awt.Color;
-import java.awt.FlowLayout;
+import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
@@ -60,8 +59,7 @@ public class GUIJuegoInicial extends JFrame{
 
 		@Override
 		public void mouseClicked(MouseEvent e) {
-			// TODO Auto-generated method stub
-			((JComponent) e.getSource()).setVisible(false);;
+			((JComponent) e.getSource()).setVisible(false);
 			repaint();
 			JuegoInicial();
 			
@@ -69,25 +67,21 @@ public class GUIJuegoInicial extends JFrame{
 
 		@Override
 		public void mouseEntered(MouseEvent arg0) {
-			// TODO Auto-generated method stub
 			
 		}
 
 		@Override
 		public void mouseExited(MouseEvent arg0) {
-			// TODO Auto-generated method stub
 			
 		}
 
 		@Override
 		public void mousePressed(MouseEvent arg0) {
-			// TODO Auto-generated method stub
 			
 		}
 
 		@Override
 		public void mouseReleased(MouseEvent arg0) {
-			// TODO Auto-generated method stub
 			
 		}
 		
@@ -129,7 +123,6 @@ public class GUIJuegoInicial extends JFrame{
 
 		@Override
 		public void mouseClicked(MouseEvent e) {
-			// TODO Auto-generated method stub
 			Random aleatorio = new Random();
 			int random = aleatorio.nextInt(contador);
 			
@@ -154,26 +147,20 @@ public class GUIJuegoInicial extends JFrame{
 
 		@Override
 		public void mousePressed(MouseEvent e) {
-			// TODO Auto-generated method stub
 			
 		}
 
 		@Override
 		public void mouseReleased(MouseEvent e) {
-			// TODO Auto-generated method stub
-			
+
 		}
 
 		@Override
 		public void mouseEntered(MouseEvent e) {
-			// TODO Auto-generated method stub
-			((JComponent) e.getSource()).setBorder(overObject);
 		}
 
 		@Override
 		public void mouseExited(MouseEvent e) {
-			// TODO Auto-generated method stub
-			((JComponent) e.getSource()).setBorder(nonBorder);
 		}
 		
 	}
