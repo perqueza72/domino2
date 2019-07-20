@@ -3,9 +3,7 @@ package domino;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.*;
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
@@ -35,6 +33,7 @@ public class GUIsDelJuego extends JFrame {
 	private Wallet chequera = new Wallet();
 	private Var robar = new Var();
 
+	private int putFichaEn = 0;
 	public GUIsDelJuego() {
 		MenuPrincipal();
 
@@ -67,34 +66,28 @@ public class GUIsDelJuego extends JFrame {
 
 		@Override
 		public void mouseClicked(MouseEvent e) {
-			// TODO Auto-generated method stub
 			((JComponent) e.getSource()).setVisible(false);
-			//repaint();
 			juegoMedio();
 
 		}
 
 		@Override
 		public void mouseEntered(MouseEvent arg0) {
-			// TODO Auto-generated method stub
 
 		}
 
 		@Override
 		public void mouseExited(MouseEvent arg0) {
-			// TODO Auto-generated method stub
 
 		}
 
 		@Override
 		public void mousePressed(MouseEvent arg0) {
-			// TODO Auto-generated method stub
 
 		}
 
 		@Override
 		public void mouseReleased(MouseEvent arg0) {
-			// TODO Auto-generated method stub
 
 		}
 
@@ -130,10 +123,10 @@ public class GUIsDelJuego extends JFrame {
 
 		//BARAJA DE LA MAQUINA.
 
-		fichaDeMaquina = new ArrayList<JLabel>();
-		fichaDelJugador = new ArrayList<JLabel>();
+		fichaDeMaquina = new ArrayList<>();
+		fichaDelJugador = new ArrayList<>();
 
-		robar.generarFichas(fichaDelJugador, fichaDeMaquina);
+		robar.generarFichas();
 		robar.repartirFichasIniciales(fichaDelJugador, fichaDeMaquina);
 
 		for(int i = 0; i < fichaDeMaquina.size(); i++)
@@ -155,11 +148,9 @@ public class GUIsDelJuego extends JFrame {
 		//CAMPO DE JUEGO
 		imagen = new ImageIcon("src/Fichas/22.png");
 
-		campito.dibujar();
-		int nObjetos =campito.getComponentCount();
-		for(int i=0; i<nObjetos; i++) {
-			campito.getComponent(i).addMouseListener(ponerFichaEnTablero);
-		}
+		campito.dibujar(imagen);
+
+		campito.addMouseListener(ponerFichaEnTablero);
 
 
 		//VAR.
@@ -199,19 +190,31 @@ public class GUIsDelJuego extends JFrame {
 
 		@Override
 		public void mouseReleased(MouseEvent e) {
-
-			if(!origen.getText().equals("invalid")) {
-				campito.getComponent(campito.getComponentCount() - 1).addMouseListener(ponerFichaEnTablero);
-				campito.validad(destino, origen.getIcon(), fichasExternas);
+				if(!origen.getText().equals("invalid")) {
+					Point punto = new Point(e.getLocationOnScreen());
+					int mitadXComponent = ((JComponent)e.getSource()).getWidth()/2;
+					if(punto.x < mitadXComponent && punto.y<479+49 || punto.y<430)
+					{
+						//ToDo: IZQUIERDA
+						putFichaEn = 1;
+					}
+					else
+					{
+						//ToDo: Derecha
+						putFichaEn=2;
+					}
+					origen.removeMouseListener(mouseJuegoMedio);
+					campito.ponerFichaEnCampo(origen, putFichaEn);
 					fichasUsuario.remove(origen);
 					fichasUsuario.repaint();
 					fichasUsuario.revalidate();
+					putFichaEn = 0;
+					origen = new JLabel("invalid");
 			}
 		}
 
 		@Override
 		public void mouseEntered(MouseEvent e) {
-			destino = (JLabel)e.getSource();
 		}
 
 		@Override
@@ -228,12 +231,10 @@ public class GUIsDelJuego extends JFrame {
 		}
 		@Override
 		public void mouseEntered(MouseEvent e) {
-			// TODO Auto-generated method stub
 		}
 
 		@Override
 		public void mouseExited(MouseEvent e) {
-			// TODO Auto-generated method stub
 		}
 
 		@Override
@@ -245,25 +246,23 @@ public class GUIsDelJuego extends JFrame {
 
 		@Override
 		public void mouseReleased(MouseEvent e) {
-			// TODO Auto-generated method stub
 			}
 	}
+
 
 	private class MouseSacarFicha implements MouseListener
 	{
 		@Override
 		public void mouseClicked(MouseEvent e) {
 			if(robar.fichasRestantes() != 0) {
-				robar.otroDar(fichaDelJugador);
+				robar.darFicha(fichasUsuario);
+				fichasUsuario.getComponent(fichasUsuario.getComponentCount()-1).addMouseListener(mouseJuegoMedio);
 				((JLabel) e.getSource()).setText(Integer.toString(robar.fichasRestantes()));
 			}
-			else
-				((JLabel)e.getSource()).setText("0");
 		}
 
 		@Override
 		public void mousePressed(MouseEvent e) {
-
 		}
 
 		@Override
