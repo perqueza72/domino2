@@ -3,10 +3,7 @@ package domino;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.*;
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
@@ -126,10 +123,10 @@ public class GUIsDelJuego extends JFrame {
 
 		//BARAJA DE LA MAQUINA.
 
-		fichaDeMaquina = new ArrayList<JLabel>();
-		fichaDelJugador = new ArrayList<JLabel>();
+		fichaDeMaquina = new ArrayList<>();
+		fichaDelJugador = new ArrayList<>();
 
-		robar.generarFichas(fichaDelJugador, fichaDeMaquina);
+		robar.generarFichas();
 		robar.repartirFichasIniciales(fichaDelJugador, fichaDeMaquina);
 
 		for(int i = 0; i < fichaDeMaquina.size(); i++)
@@ -151,7 +148,7 @@ public class GUIsDelJuego extends JFrame {
 		//CAMPO DE JUEGO
 		imagen = new ImageIcon("src/Fichas/22.png");
 
-		campito.dibujar();
+		campito.dibujar(imagen);
 
 		campito.addMouseListener(ponerFichaEnTablero);
 
@@ -196,10 +193,7 @@ public class GUIsDelJuego extends JFrame {
 				if(!origen.getText().equals("invalid")) {
 					Point punto = new Point(e.getLocationOnScreen());
 					int mitadXComponent = ((JComponent)e.getSource()).getWidth()/2;
-					int mitadYComponent = ((JComponent)e.getSource()).getHeight()/2 + ((JComponent)e.getSource()).getY();
-					System.out.println("punto en x: " + punto.x +  " punto en Y: " + punto.y);
-					System.out.println("punto en x: " + mitadXComponent +  " punto en Y esperado: "+ mitadYComponent);
-					if(punto.x < mitadXComponent && punto.y<439 || punto.y<319)
+					if(punto.x < mitadXComponent && punto.y<479+49 || punto.y<430)
 					{
 						//ToDo: IZQUIERDA
 						putFichaEn = 1;

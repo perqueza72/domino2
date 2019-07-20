@@ -1,22 +1,15 @@
 package domino;
 
-import java.awt.Color;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+
 import java.util.ArrayList;
 import java.util.Random;
-
 import javax.swing.*;
-import javax.swing.border.Border;
 
 public class Var {
-	private int fichas = 28;
 	private ArrayList<JLabel> fichasRobar;
-	private ImageIcon imagen;
-	private Border nonBorder = BorderFactory.createLineBorder(Color.white, 2);
 
 	
-	public void generarFichas(ArrayList<JLabel> arrayUsuario, ArrayList<JLabel> arrayMaquina)
+	public void generarFichas()
 	{
 		fichasRobar = new ArrayList<>();
 		for(int i = 6; i >= 0; i--) {
